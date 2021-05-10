@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MOF Integration Example</title>
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container my-2">
+    <h1> Make A Transaction</h1>
+
+    <a th:href="@{/sendTransaction}" class="btn btn-primary btn-sm mb-3"> Make Transaction Through Rest Api</a>
+
+    <a th:href="@{/send_transaction_mof_plugin}" class="btn btn-primary btn-sm mb-3"> Make Transaction Through MOF Plugin</a>
+
+</div>
+</body>
+</html>

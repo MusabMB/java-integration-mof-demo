@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Send Request</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>MOF Plugin Request</h1>
+    <hr>
+    <h2>Fill The Mandatory Fields</h2>
+
+    <form action="#" th:action="@{/send_request_mof_plugin}" th:object="${mofPluginRequest}"
+          method="POST">
+
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <label>Alias Name</label>
+                    <input type="text" th:field="*{aliasName}" class="form-control mb-10 col-10"
+                           placeholder="Alias Name"
+                           th:required="true">
+                </td>
+                <td>
+                    <label>Action</label>
+                    <input type="number" th:field="*{action}" class="form-control mb-10 col-10"
+                           placeholder="Action"
+                           th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Track Id</label>
+                    <input type="text" th:field="*{trackid}" class="form-control mb-10 col-10" placeholder="TrackId"
+                           disabled>
+                </td>
+                <td>
+                    <label>Language</label>
+                    <input type="text" th:field="*{language}" class="form-control mb-10 col-10" placeholder="Language">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Currency</label>
+                    <input type="number" th:field="*{currency}" class="form-control mb-10 col-10"
+                           placeholder="Currency" th:required="true">
+                </td>
+                <td>
+                    <label>Amount</label>
+                    <input type="number" th:field="*{amount}" class="form-control mb-10 col-10" placeholder="Amount"
+                           th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Udf 1</label>
+                    <input type="text" th:field="*{udf1}" class="form-control mb-10 col-10"
+                           placeholder="Udf 1">
+                </td>
+                <td>
+                    <label>Udf 2</label>
+                    <input type="text" th:field="*{udf2}" class="form-control mb-10 col-10" placeholder="Udf 2">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Udf 3</label>
+                    <input type="text" th:field="*{udf3}" class="form-control mb-10 col-10" placeholder="Udf 3">
+                </td>
+                <td>
+                    <label>Udf 4</label>
+                    <input type="text" th:field="*{udf4}" class="form-control mb-10 col-10" placeholder="Udf 4">
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label>UDF 5</label>
+                    <input type="text" th:field="*{udf5}" class="form-control mb-10 col-10" placeholder="Udf 5">
+                </td>
+                <td>
+                    <label>Payor ID Type</label>
+                    <input type="text" th:field="*{payorIDType}" class="form-control mb-10 col-10"
+                           placeholder="Payor ID Type" th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Payor ID Number</label>
+                    <input type="text" th:field="*{payorIDNumber}" class="form-control mb-10 col-10"
+                           placeholder="Payor ID Number" th:required="true">
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+        <hr>
+
+        <a class="btn btn-info col-2" th:href="@{/agency_details_mof_plugin}"> Add Agency Details </a>
+        <hr>
+        <button type="submit" class="btn btn-info col-2"> Send Request</button>
+    </form>
+
+    <hr>
+    <a th:href="@{/}"> Home </a>
+</div>
+</body>
+</html>

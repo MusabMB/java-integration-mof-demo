@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Add Agency Details</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Add Agency Details</h1>
+    <hr>
+    <h2>Fill The Mandatory Fields</h2>
+
+    <form action="#" th:action="@{/agency_details_mof_plugin}" modelAttribute="agencyDetails"
+          method="POST">
+
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <label>Issuer Agency Id</label>
+                    <input type="text" th:field="*{agencyDetails.issuerAgencyId}"
+                           class="form-control mb-10 col-10" placeholder="Issuer Agency Id" th:required="true">
+                </td>
+                <td>
+                    <label>Billing Account Id</label>
+                    <input type="text" th:field="*{agencyDetails.billingAccountId}"
+                           class="form-control mb-10 col-10" placeholder="Billing Account Id" th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Billing Cycle</label>
+                    <input type="text" th:field="*{agencyDetails.billingCycle}"
+                           class="form-control mb-10 col-10" placeholder="Billing Cycle">
+                </td>
+                <td>
+                    <label>Due Amount</label>
+                    <input type="text" th:field="*{agencyDetails.dueAmount}"
+                           class="form-control mb-10 col-10" placeholder="Due Amount" th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Paid Amount</label>
+                    <input type="text" th:field="*{agencyDetails.paidAmount}"
+                           class="form-control mb-10 col-10" placeholder="Paid Amount" th:required="true">
+                </td>
+                <td>
+                    <label>Bill Reference Info</label>
+                    <input type="text" th:field="*{agencyDetails.billReferenceInfo}"
+                           class="form-control mb-10 col-10" placeholder="Bill Reference Info" th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Agency Code</label>
+                    <input type="text" th:field="*{agencyDetails.agencyCode}"
+                           class="form-control mb-10 col-10" placeholder="Agency Code">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <button type="submit" class="btn btn-info col-2" onclick="myFunction()"> Add Agency Details</button>
+    </form>
+    <hr>
+    <a class="btn btn-info col-2" th:href="@{/send_request_mof_plugin}"> Back Send Request </a>
+    <hr>
+
+    <a th:href="@{/}"> Home </a>
+</div>
+
+<script>
+    function myFunction() {
+        alert("Agency details Has Been Added ");
+    }
+</script>
+</body>
+</html>

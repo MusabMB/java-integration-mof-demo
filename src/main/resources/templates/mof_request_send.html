@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Send Request</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Plain TranData Request</h1>
+    <hr>
+    <h2>Fill The Mandatory Fields</h2>
+
+    <form action="#" th:action="@{/sendRequest}" th:object="${plainTranData}"
+          method="POST">
+
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <label>TranPortal ID</label>
+                    <input type="text" th:field="*{id}" class="form-control mb-10 col-10" placeholder="TranPortal ID"
+                           th:required="true">
+                </td>
+                <td>
+                    <label>TranPortal Password</label>
+                    <input type="password" th:field="*{password}" class="form-control mb-10 col-10"
+                           placeholder="TranPortal Password"
+                           th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Terminal Resource key</label>
+                    <input type="number" th:field="*{terminalResourceKey}" class="form-control mb-10 col-10"
+                           placeholder="Terminal Resource key" th:required="true">
+                </td>
+                <td>
+                    <label>Amount</label>
+                    <input type="number" th:field="*{amt}" class="form-control mb-10 col-10" placeholder="Amount"
+                           th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Action</label>
+                    <input type="number" th:field="*{action}" class="form-control mb-10 col-10" placeholder="Action"
+                           th:required="true">
+                </td>
+                <td>
+                    <label>Currency Code</label>
+                    <input type="number" th:field="*{currencyCode}" class="form-control mb-10 col-10"
+                           placeholder="Currency Code"
+                           th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Track Id</label>
+                    <input type="text" th:field="*{trackId}" class="form-control mb-10 col-10" placeholder="TrackId"
+                           disabled>
+                </td>
+                <td>
+                    <label>Response URL</label>
+                    <input type="text" th:field="*{responseURL}" class="form-control mb-10 col-10"
+                           placeholder="Response URL"
+                           th:required="true">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Error URL</label>
+                    <input type="text" th:field="*{errorURL}" class="form-control mb-10 col-10" placeholder="Error URL"
+                           th:required="true">
+                </td>
+                <td>
+                    <label>UDF 1</label>
+                    <input type="text" th:field="*{udf1}" class="form-control mb-10 col-10" placeholder="Udf 1">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>UDF 2</label>
+                    <input type="text" th:field="*{udf2}" class="form-control mb-10 col-10" placeholder="Udf 2">
+                </td>
+                <td>
+                    <label>UDF 3</label>
+                    <input type="text" th:field="*{udf3}" class="form-control mb-10 col-10" placeholder="Udf 3">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>UDF 4</label>
+                    <input type="text" th:field="*{udf4}" class="form-control mb-10 col-10" placeholder="Udf 4">
+                </td>
+                <td>
+                    <label>UDF 5</label>
+                    <input type="text" th:field="*{udf5}" class="form-control mb-10 col-10" placeholder="Udf 5">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>UDF 6</label>
+                    <input type="text" th:field="*{udf6}" class="form-control mb-10 col-10" placeholder="Udf 6">
+                </td>
+                <td>
+                    <label>UDF 7</label>
+                    <input type="text" th:field="*{udf7}" class="form-control mb-10 col-10" placeholder="Udf 7">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>UDF 8</label>
+                    <input type="text" th:field="*{udf8}" class="form-control mb-10 col-10" placeholder="Udf 8">
+                </td>
+                <td>
+                    <label>UDF 9</label>
+                    <input type="text" th:field="*{udf9}" class="form-control mb-10 col-10" placeholder="Udf 9">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>UDF 10</label>
+                    <input type="text" th:field="*{udf10}" class="form-control mb-10 col-10" placeholder="Udf 10">
+                </td>
+                <td>
+                    <label>Language Id</label>
+                    <input type="text" th:field="*{langid}" class="form-control mb-10 col-10" placeholder="Language Id">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>Payor Id Type</label>
+                    <input type="text" th:field="*{payorIDType}" class="form-control mb-10 col-10"
+                           placeholder="Payor Id Type" th:required="true">
+                </td>
+                <td>
+                    <label>Payor Id Number</label>
+                    <input type="text" th:field="*{payorIDNumber}" class="form-control mb-10 col-10"
+                           placeholder="Payor Id Number" th:required="true">
+
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+        <hr>
+
+        <a class="btn btn-info col-2" th:href="@{/bill_details}"> Add Bill Details </a>
+        <hr>
+        <button type="submit" class="btn btn-info col-2"> Show Request</button>
+    </form>
+
+    <hr>
+    <a th:href="@{/}"> Home </a>
+</div>
+</body>
+</html>
