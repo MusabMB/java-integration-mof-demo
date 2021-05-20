@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ public class PlainTranDataMOFPluginController {
     public String sendTransactionMOFPlugin(@ModelAttribute("mofPluginRequest") MofPluginRequest mofPluginRequest, Model model) throws Exception {
 
         iPayPipe pipe = new iPayPipe();
-        String resourcePath = "C:\\Users\\ahmad\\Downloads\\resource.cgn";
-        String keystorePath = "C:\\Users\\ahmad\\Downloads\\keystore.bin";
+        String resourcePath = "D://Projects//";
+        String keystorePath = "D://Projects//";
 
         SecureRandom random = new SecureRandom();
         StringBuilder resultTrackId = new StringBuilder();
@@ -35,7 +36,8 @@ public class PlainTranDataMOFPluginController {
             resultTrackId.append(dic.charAt(index));
         }
         pipe.setTrackId(String.valueOf(resultTrackId));
-
+        pipe.setResponseURL(mofPluginRequest.getResponseURL());
+        pipe.setErrorURL(mofPluginRequest.getErrorURL());
         pipe.setResourcePath(resourcePath);
         pipe.setKeystorePath(keystorePath);
         pipe.setAlias(mofPluginRequest.getAliasName());
@@ -51,13 +53,13 @@ public class PlainTranDataMOFPluginController {
 
         pipe.setPayorIDType(mofPluginRequest.getPayorIDType());
         pipe.setPayorIDNumber(mofPluginRequest.getPayorIDNumber());
-
         /** For Bank Hosted Payment Integration, the method to be called is **/
         int result = pipe.performPaymentInitializationHTTP();
         //To redirect the web address.
         if (result == 0) {
-            Response response = new Response();
-            response.sendRedirect(pipe.getWebAddress());//Redirect to ARB Payment Gateway page
+//            HttpServletResponse response = null;
+//            assert false;
+//            response.sendRedirect(pipe.getWebAddress());//Redirect to ARB Payment Gateway page
         } else {
             System.out.println(pipe.getError()); //Problem in connecting the ARB Payment Gateway
         }
@@ -84,5 +86,15 @@ public class PlainTranDataMOFPluginController {
     public String goToAgencyDetails(@ModelAttribute("agencyDetails") AgencyDetails agencyDetails, Model model) {
         model.addAttribute("agencyDetails", agencyDetails);
         return "agency_details_mof_plugin";
+    }
+
+    @GetMapping("/final_result_plugin")
+    public String finalResultPlugin() {
+        return "final_result_plugin";
+    }
+
+    @PostMapping("/final_result_plugin")
+    public String finalResultPluginShow() {
+        return "final_result_plugin";
     }
 }
