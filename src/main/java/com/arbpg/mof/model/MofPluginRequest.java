@@ -46,16 +46,22 @@ public class MofPluginRequest {
     @Column
     String Udf5;
 
+    @Column
+    String responseURL;
+
+    @Column
+    String ErrorURL;
+
     public MofPluginRequest() {
     }
 
-    public MofPluginRequest(String action, String aliasName, String currency, String language, String amount, String trackid, String payorIDType, String payorIDNumber, String udf1, String udf2, String udf3, String udf4, String udf5) {
+    public MofPluginRequest(String trackid, String action, String aliasName, String currency, String language, String amount, String payorIDType, String payorIDNumber, String udf1, String udf2, String udf3, String udf4, String udf5, String responseURL, String errorURL) {
+        this.trackid = trackid;
         this.action = action;
         this.aliasName = aliasName;
         this.currency = currency;
         this.language = language;
         this.amount = amount;
-        this.trackid = trackid;
         this.payorIDType = payorIDType;
         this.payorIDNumber = payorIDNumber;
         Udf1 = udf1;
@@ -63,6 +69,8 @@ public class MofPluginRequest {
         Udf3 = udf3;
         Udf4 = udf4;
         Udf5 = udf5;
+        this.responseURL = responseURL;
+        ErrorURL = errorURL;
     }
 
     public String getAction() {
@@ -167,6 +175,22 @@ public class MofPluginRequest {
 
     public void setUdf5(String udf5) {
         Udf5 = udf5;
+    }
+
+    public String getResponseURL() {
+        return responseURL;
+    }
+
+    public void setResponseURL(String responseURL) {
+        this.responseURL = responseURL;
+    }
+
+    public String getErrorURL() {
+        return ErrorURL;
+    }
+
+    public void setErrorURL(String errorURL) {
+        ErrorURL = errorURL;
     }
 }
 
