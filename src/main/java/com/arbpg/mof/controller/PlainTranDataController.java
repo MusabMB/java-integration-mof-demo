@@ -138,9 +138,12 @@ public class PlainTranDataController {
     public String finalResponse(Model model, @RequestBody String result) throws Exception {
 
         model.addAttribute("final_response", result);
-        String encryptedTranData = result.substring(65, 1153);
-        String decryptedTranData = PlainTranDataService.decode(PlainTranDataService.decryptAES("10730561291410730561291410730561", encryptedTranData));
-        model.addAttribute("decryptedTranData", decryptedTranData);
+
+        Gson g = new Gson();
+        FinalResult finalResult = g.fromJson(plainTranDataService.convert(result), FinalResult.class);
+        String encryptedTranData = finalResult.getTrandata();
+        String decryptedTranData = PlainTranDataService.decode(PlainTranDataService.decryptAES(terminalResourceKey, encryptedTranData));
+        model.addAttribute("decryptedTranData", plainTranDataService.convert(decryptedTranData));
 
         return "final_result";
     }
