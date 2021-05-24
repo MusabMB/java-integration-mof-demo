@@ -135,4 +135,19 @@ public class PlainTranDataService {
             return "Issue while decoding" +e.getMessage();
         }
     }
+    public String convert(String a) {
+        StringBuilder res = new StringBuilder("{\"");
+
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) == '=') {
+                res.append("\"" + ":" + "\"");
+            } else if (a.charAt(i) == '&') {
+                res.append("\"" + "," + "\"");
+            } else {
+                res.append(a.charAt(i));
+            }
+        }
+        res.append("\"" + "}");
+        return res.toString();
+    }
 }
