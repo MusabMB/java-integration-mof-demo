@@ -1,13 +1,10 @@
 package com.arbpg.mof;
 
-import com.arbpg.mof.model.MofPluginRequest;
+import com.arbpg.mof.model.MOFRequest;
 import com.arbpg.mof.model.PlainTrandata;
-import com.arbpg.mof.model.RequestResult;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
@@ -23,19 +20,13 @@ public class MofApplication {
     }
 
     @Bean
-    public RequestResult getRequestResult() {
-        return new RequestResult();
-    }
-
-    @Bean
     public PlainTrandata getPlainTrandata() {
         return new PlainTrandata();
     }
 
     @Bean
-    public MofPluginRequest getMOFPluginRequest() {
-        return new MofPluginRequest();
+    public MOFRequest getMOFRequest() {
+        return new MOFRequest();
     }
-
 
 }

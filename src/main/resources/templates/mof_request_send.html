@@ -15,8 +15,7 @@
     <hr>
     <h2>Fill The Mandatory Fields</h2>
 
-    <form action="#" th:action="@{/sendRequest}" th:object="${plainTranData}"
-          method="POST">
+    <form  action="#" method="post" th:action="@{/goToMOFPaymentPage}" th:object="${plainTranData}">
 
         <table>
             <tbody>

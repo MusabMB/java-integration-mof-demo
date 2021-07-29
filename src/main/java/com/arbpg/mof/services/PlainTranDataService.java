@@ -1,14 +1,11 @@
 package com.arbpg.mof.services;
 
+import com.arbpg.mof.model.BillDetails;
 import com.arbpg.mof.model.PlainTrandata;
-import com.arbpg.mof.model.RequestToPG;
 import com.arbpg.mof.repository.PlainTraDataRequestRepository;
+import com.google.gson.Gson;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +14,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Collections;
+import java.util.List;
 
 @Service
 public class PlainTranDataService {
@@ -98,15 +95,6 @@ public class PlainTranDataService {
         return new String(textDecrypted);
     }
 
-    public String requestFromMerchantToPG(RequestToPG[] requestToPG) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-
-        HttpEntity<RequestToPG[]> entity = new HttpEntity<>(requestToPG, headers);
-        String result=restTemplate.exchange("https://securepayments.alrajhibank.com.sa/pg/payment/hosted.htm", HttpMethod.POST, entity, String.class).getBody();
-        return result;
-    }
     public String getFinalURL(String result) {
         return result.substring(19)+"?PaymentID="+result.substring(0,18);
     }
@@ -149,5 +137,131 @@ public class PlainTranDataService {
         }
         res.append("\"" + "}");
         return res.toString();
+    }
+
+    public synchronized StringBuffer buildHostRequest(PlainTrandata plainTrandata)
+    {
+        String amt = String.valueOf(plainTrandata.getAmt());
+        String action = String.valueOf(plainTrandata.getAction());
+        String responseURL = String.valueOf(plainTrandata.getResponseURL());
+        String errorURL = String.valueOf(plainTrandata.getErrorURL());
+        String trackId = String.valueOf(plainTrandata.getTrackId());
+        String udf1 = String.valueOf(plainTrandata.getUdf1());
+        String udf2 = String.valueOf(plainTrandata.getUdf2());
+        String udf3 = String.valueOf(plainTrandata.getUdf3());
+        String udf4 = String.valueOf(plainTrandata.getUdf4());
+        String udf5 = String.valueOf(plainTrandata.getUdf5());
+        String udf6 = String.valueOf(plainTrandata.getUdf6());
+        String udf7 = String.valueOf(plainTrandata.getUdf7());
+        String udf8 = String.valueOf(plainTrandata.getUdf8());
+        String udf9 = String.valueOf(plainTrandata.getUdf9());
+        String udf10 = String.valueOf(plainTrandata.getUdf10());
+        String currency = String.valueOf(plainTrandata.getCurrencyCode());
+        String language = String.valueOf(plainTrandata.getLangid());
+        String id = String.valueOf(plainTrandata.getId());
+        String password = String.valueOf(plainTrandata.getPassword());
+        List<BillDetails> billDetails = plainTrandata.getBillDetails();
+
+
+
+        StringBuffer requestbuffer;
+        try
+        {
+            requestbuffer = new StringBuffer();
+
+            //Note this method is placed in the same class. So, we didn't use getters.
+            if(amt.length() > 0)
+            {
+                requestbuffer.append("amt="+amt+"&");
+            }
+            if(action.length() > 0)
+            {
+                requestbuffer.append("action="+action+"&");
+            }
+            if(responseURL.length() > 0)
+            {
+                requestbuffer.append("responseURL="+responseURL+"&");
+            }
+            if(errorURL.length() > 0)
+            {
+                requestbuffer.append("errorURL="+errorURL+"&");
+            }
+            if(trackId.length() > 0)
+            {
+                requestbuffer.append("trackid="+trackId+"&");
+            }
+            if(udf1.length() > 0)
+            {
+                requestbuffer.append("udf1="+udf1+"&");
+            }
+            if(udf2.length() > 0)
+            {
+                requestbuffer.append("udf2="+udf2+"&");
+            }
+            if(udf3.length() > 0)
+            {
+                requestbuffer.append("udf3="+udf3+"&");
+            }
+            if(udf4.length() > 0)
+            {
+                requestbuffer.append("udf4="+udf4+"&");
+            }
+            if(udf5.length() > 0)
+            {
+                requestbuffer.append("udf5="+udf5+"&");
+            }
+            if(udf6.length() > 0)
+            {
+                requestbuffer.append("udf6="+udf6+"&");
+            }
+            if(udf7.length() > 0)
+            {
+                requestbuffer.append("udf7="+udf7+"&");
+            }
+            if(udf8.length() > 0)
+            {
+                requestbuffer.append("udf8="+udf8+"&");
+            }
+            if(udf9.length() > 0)
+            {
+                requestbuffer.append("udf9="+udf9+"&");
+            }
+            if(udf10.length() > 0)
+            {
+                requestbuffer.append("udf10="+udf10+"&");
+            }
+            if(currency.length() > 0)
+            {
+                requestbuffer.append("currencycode="+currency+"&");
+            }
+            if(language.length() > 0)
+            {
+                requestbuffer.append("langid="+language+"&");
+            }
+            if(id.length() > 0)
+            {
+                requestbuffer.append("id="+id+"&");
+            }
+            if(password.length() > 0)
+            {
+                requestbuffer.append("password="+password);
+            }
+            if(billDetails!=null && billDetails.size() > 0)
+            {
+                //requestbuffer.append("billDetails="+AgencyDetails+"&");
+                String json = new Gson().toJson(billDetails);
+                requestbuffer.append("&billDetails=" + json);
+            }
+            return requestbuffer;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            requestbuffer = null;
+        }
     }
 }
