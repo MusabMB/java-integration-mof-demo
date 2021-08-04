@@ -23,12 +23,15 @@ public class PlainTrandataRequest extends PlainTrandata {
 
     String terminalResourceKey;
 
+    String paymentURL;
+
     public PlainTrandataRequest() {
     }
 
-    public PlainTrandataRequest(double amt, int action, String password, String id, int currencyCode, String trackId, String responseURL, String errorURL, String udf1, String udf2, String udf3, String udf4, String udf5, String udf6, String udf7, String udf8, String udf9, String udf10, String langid, String payorIDType, String payorIDNumber, List<BillDetails> billDetails, String terminalResourceKey) {
+    public PlainTrandataRequest(double amt, int action, String password, String id, int currencyCode, String trackId, String responseURL, String errorURL, String udf1, String udf2, String udf3, String udf4, String udf5, String udf6, String udf7, String udf8, String udf9, String udf10, String langid, String payorIDType, String payorIDNumber, List<BillDetails> billDetails, String terminalResourceKey , String paymentURL) {
         super(amt, action, password, id, currencyCode, trackId, responseURL, errorURL, udf1, udf2, udf3, udf4, udf5, udf6, udf7, udf8, udf9, udf10, langid, payorIDType, payorIDNumber, billDetails);
         this.terminalResourceKey = terminalResourceKey;
+        this.paymentURL=paymentURL;
     }
 
     public String getTerminalResourceKey() {
@@ -37,5 +40,13 @@ public class PlainTrandataRequest extends PlainTrandata {
 
     public void setTerminalResourceKey(String terminalResourceKey) {
         this.terminalResourceKey = terminalResourceKey;
+    }
+
+    public String getPaymentURL() {
+        return paymentURL;
+    }
+
+    public void setPaymentURL(String paymentURL) {
+        this.paymentURL = paymentURL;
     }
 }
