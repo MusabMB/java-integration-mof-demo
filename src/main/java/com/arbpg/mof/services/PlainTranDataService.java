@@ -2,141 +2,72 @@ package com.arbpg.mof.services;
 
 import com.arbpg.mof.model.BillDetails;
 import com.arbpg.mof.model.PlainTrandata;
-import com.arbpg.mof.repository.PlainTraDataRequestRepository;
 import com.google.gson.Gson;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
 public class PlainTranDataService {
 
-    @Autowired
-    private PlainTraDataRequestRepository plainTraDataRequestRepository;
-
-    @Autowired
-    RestTemplate restTemplate;
-
-    private static final String HEX_DIGITS = "0123456789abcdef";
     public static String AES_IV = "PGKEYENCDECIVSPC";
 
     static {
         PlainTranDataService.AES_IV = "PGKEYENCDECIVSPC";
     }
 
-    public String encryptAESPKCS5(final String encryptString, final String key) throws Exception {
-        byte[] encryptedText = null;
+    public String encryptAESPKCS5(final String encryptString, final String key) {
+        byte[] encryptedText;
         String encryptedData = null;
-        IvParameterSpec ivspec = null;
-        SecretKeySpec skeySpec = null;
-        Cipher cipher = null;
-        byte[] text = null;
-        String result=null;
+        IvParameterSpec ivspec;
+        SecretKeySpec skeySpec;
+        Cipher cipher;
+        byte[] text;
+        String result;
         try {
-            ivspec = new IvParameterSpec(PlainTranDataService.AES_IV.getBytes("UTF-8"));
-            skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
+            ivspec = new IvParameterSpec(PlainTranDataService.AES_IV.getBytes(StandardCharsets.UTF_8));
+            skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
             cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(1, skeySpec, ivspec);
-            text = encryptString.getBytes("UTF-8");
+            text = encryptString.getBytes(StandardCharsets.UTF_8);
             encryptedText = cipher.doFinal(text);
             encryptedData = Base64.encodeBase64String(encryptedText);
             result= javax.xml.bind.DatatypeConverter.printHexBinary(encryptedText);
         } catch (Exception e) {
             e.printStackTrace();
             return encryptedData;
-        } finally {
-            encryptedText = null;
-            ivspec = null;
-            skeySpec = null;
-            cipher = null;
-            text = null;
         }
-        encryptedText = null;
-        ivspec = null;
-        skeySpec = null;
-        cipher = null;
-        text = null;
         return result;
     }
 
-    public static String decryptAES(final String key, final String encryptedString) throws Exception {
-        SecretKeySpec skeySpec = null;
-        IvParameterSpec ivspec = null;
-        Cipher cipher = null;
+    public static String decryptAES(final String key, final String encryptedString) {
+        SecretKeySpec skeySpec;
+        IvParameterSpec ivspec;
+        Cipher cipher;
         byte[] textDecrypted = null;
         try {
-            final byte[] b = hexStringToByteArray(encryptedString);
-            skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-            ivspec = new IvParameterSpec(PlainTranDataService.AES_IV.getBytes("UTF-8"));
+            final int len = encryptedString.length();
+            final byte[] data = new byte[len / 2];
+            for (int i = 0; i < len; i += 2) {
+                data[i / 2] = (byte)((Character.digit(encryptedString.charAt(i), 16) << 4) + Character.digit(encryptedString.charAt(i + 1), 16));
+            }
+            skeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+            ivspec = new IvParameterSpec(PlainTranDataService.AES_IV.getBytes(StandardCharsets.UTF_8));
             cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(2, skeySpec, ivspec);
-            textDecrypted = cipher.doFinal(b);
+            textDecrypted = cipher.doFinal(data);
         }
         catch (Exception e) {
             e.printStackTrace();
+            assert false;
             return new String(textDecrypted);
         }
-        finally {
-            skeySpec = null;
-            ivspec = null;
-            cipher = null;
-        }
-        skeySpec = null;
-        ivspec = null;
-        cipher = null;
         return new String(textDecrypted);
-    }
-
-    public String getFinalURL(String result) {
-        return result.substring(19)+"?PaymentID="+result.substring(0,18);
-    }
-
-    public static byte[] hexStringToByteArray(final String s) {
-        final int len = s.length();
-        final byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte)((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i + 1), 16));
-        }
-        return data;
-    }
-
-    public static String decode(String url)
-    {
-        try {
-            String prevURL="";
-            String decodeURL=url;
-            while(!prevURL.equals(decodeURL))
-            {
-                prevURL=decodeURL;
-                decodeURL= URLDecoder.decode( decodeURL, "UTF-8" );
-            }
-            return decodeURL;
-        } catch (UnsupportedEncodingException e) {
-            return "Issue while decoding" +e.getMessage();
-        }
-    }
-    public String convert(String a) {
-        StringBuilder res = new StringBuilder("{\"");
-
-        for (int i = 0; i < a.length(); i++) {
-            if (a.charAt(i) == '=') {
-                res.append("\"" + ":" + "\"");
-            } else if (a.charAt(i) == '&') {
-                res.append("\"" + "," + "\"");
-            } else {
-                res.append(a.charAt(i));
-            }
-        }
-        res.append("\"" + "}");
-        return res.toString();
     }
 
     public synchronized StringBuffer buildHostRequest(PlainTrandata plainTrandata)
@@ -172,85 +103,84 @@ public class PlainTranDataService {
             //Note this method is placed in the same class. So, we didn't use getters.
             if(amt.length() > 0)
             {
-                requestbuffer.append("amt="+amt+"&");
+                requestbuffer.append("amt=").append(amt).append("&");
             }
             if(action.length() > 0)
             {
-                requestbuffer.append("action="+action+"&");
+                requestbuffer.append("action=").append(action).append("&");
             }
             if(responseURL.length() > 0)
             {
-                requestbuffer.append("responseURL="+responseURL+"&");
+                requestbuffer.append("responseURL=").append(responseURL).append("&");
             }
             if(errorURL.length() > 0)
             {
-                requestbuffer.append("errorURL="+errorURL+"&");
+                requestbuffer.append("errorURL=").append(errorURL).append("&");
             }
             if(trackId.length() > 0)
             {
-                requestbuffer.append("trackid="+trackId+"&");
+                requestbuffer.append("trackid=").append(trackId).append("&");
             }
             if(udf1.length() > 0)
             {
-                requestbuffer.append("udf1="+udf1+"&");
+                requestbuffer.append("udf1=").append(udf1).append("&");
             }
             if(udf2.length() > 0)
             {
-                requestbuffer.append("udf2="+udf2+"&");
+                requestbuffer.append("udf2=").append(udf2).append("&");
             }
             if(udf3.length() > 0)
             {
-                requestbuffer.append("udf3="+udf3+"&");
+                requestbuffer.append("udf3=").append(udf3).append("&");
             }
             if(udf4.length() > 0)
             {
-                requestbuffer.append("udf4="+udf4+"&");
+                requestbuffer.append("udf4=").append(udf4).append("&");
             }
             if(udf5.length() > 0)
             {
-                requestbuffer.append("udf5="+udf5+"&");
+                requestbuffer.append("udf5=").append(udf5).append("&");
             }
             if(udf6.length() > 0)
             {
-                requestbuffer.append("udf6="+udf6+"&");
+                requestbuffer.append("udf6=").append(udf6).append("&");
             }
             if(udf7.length() > 0)
             {
-                requestbuffer.append("udf7="+udf7+"&");
+                requestbuffer.append("udf7=").append(udf7).append("&");
             }
             if(udf8.length() > 0)
             {
-                requestbuffer.append("udf8="+udf8+"&");
+                requestbuffer.append("udf8=").append(udf8).append("&");
             }
             if(udf9.length() > 0)
             {
-                requestbuffer.append("udf9="+udf9+"&");
+                requestbuffer.append("udf9=").append(udf9).append("&");
             }
             if(udf10.length() > 0)
             {
-                requestbuffer.append("udf10="+udf10+"&");
+                requestbuffer.append("udf10=").append(udf10).append("&");
             }
             if(currency.length() > 0)
             {
-                requestbuffer.append("currencycode="+currency+"&");
+                requestbuffer.append("currencycode=").append(currency).append("&");
             }
             if(language.length() > 0)
             {
-                requestbuffer.append("langid="+language+"&");
+                requestbuffer.append("langid=").append(language).append("&");
             }
             if(id.length() > 0)
             {
-                requestbuffer.append("id="+id+"&");
+                requestbuffer.append("id=").append(id).append("&");
             }
             if(password.length() > 0)
             {
-                requestbuffer.append("password="+password);
+                requestbuffer.append("password=").append(password);
             }
             if(billDetails!=null && billDetails.size() > 0)
             {
-                //requestbuffer.append("billDetails="+AgencyDetails+"&");
                 String json = new Gson().toJson(billDetails);
-                requestbuffer.append("&billDetails=" + json);
+                requestbuffer.append("&billDetails=").append(json);
             }
             return requestbuffer;
         }
@@ -258,10 +188,6 @@ public class PlainTranDataService {
         {
             e.printStackTrace();
             return null;
-        }
-        finally
-        {
-            requestbuffer = null;
         }
     }
 }
