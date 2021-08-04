@@ -15,8 +15,12 @@
     <hr>
     <h2>Fill The Mandatory Fields</h2>
 
-    <form  action="#" method="post" th:action="@{/goToMOFPaymentPage}" th:object="${plainTranData}">
-
+    <form action="#" method="post" th:action="@{/goToMOFPaymentPage}" th:object="${plainTranData}">
+        <label>Payment Environment</label>
+        <select name="paymentURL" class="form-control mb-10 col-10" placeholder="Payment Environment" th:required="true">
+            <option value="https://securepayments.alrajhibank.com.sa/pg/servlet/PaymentInitHTTPServlet">Test</option>
+            <option value="https://digitalpayments.alrajhibank.com.sa/pg/servlet/PaymentInitHTTPServlet">Live</option>
+        </select>
         <table>
             <tbody>
             <tr>
@@ -47,14 +51,16 @@
             <tr>
                 <td>
                     <label>Action</label>
-                    <input type="number" th:field="*{action}" class="form-control mb-10 col-10" placeholder="Action"
-                           th:required="true">
+                    <select name="action" class="form-control mb-10 col-10" placeholder="Action" th:required="true">
+                        <option value="1">Purchase</option>
+                        <option value="4">Pre-Auth</option>
+                    </select>
                 </td>
                 <td>
                     <label>Currency Code</label>
-                    <input type="number" th:field="*{currencyCode}" class="form-control mb-10 col-10"
-                           placeholder="Currency Code"
-                           th:required="true">
+                    <select name="currencyCode" class="form-control mb-10 col-10" placeholder="Currency Code" th:required="true">
+                        <option value="682">Riyal</option>
+                    </select>
                 </td>
             </tr>
             <tr>

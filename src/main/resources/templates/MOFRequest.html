@@ -118,7 +118,7 @@
     <div class="container">
 
 
-      <form  name="form1" method="post" action="https://securepayments.alrajhibank.com.sa/pg/servlet/PaymentInitHTTPServlet" >
+      <form  name="form1" method="post" th:action="*{paymentURL}" >
 
         <div class="col-50">
           <h3>Payment</h3>
@@ -129,14 +129,14 @@
             <i class="fa fa-cc-mastercard" style="color:red;"></i>
             <i class="fa fa-cc-discover" style="color:orange;"></i>
           </div>
-          <label for="cname">Name on Card</label>
-          <input type="text" id="cname" name="tranportalId" th:value="*{tranportalId}">
-          <label for="ccnum">Credit card number</label>
-          <input type="text" id="ccnum" name="responseURL" th:value="*{responseURL}" th:placeholder="test">
-          <label for="paymentId">Payment ID</label>
-          <input type="text" id="paymentId" name="errorURL" th:value="*{errorURL}">
-          <label for="expmonth">Exp Month</label>
-          <input type="text" id="expmonth" name="trandata" th:value="*{trandata}">
+          <label for="tranportalId">Tranportal Id</label>
+          <input type="text" id="tranportalId" name="tranportalId" th:value="*{tranportalId}">
+          <label for="responseURL">Response URL</label>
+          <input type="text" id="responseURL" name="responseURL" th:value="*{responseURL}">
+          <label for="errorURL">Error URL</label>
+          <input type="text" id="errorURL" name="errorURL" th:value="*{errorURL}">
+          <label for="trandata">Encrypted Trandata</label>
+          <input type="text" id="trandata" name="trandata" th:value="*{trandata}">
 
 
         </div>
