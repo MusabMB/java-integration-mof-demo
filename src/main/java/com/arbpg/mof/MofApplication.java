@@ -15,11 +15,6 @@ public class MofApplication {
     }
 
     @Bean
-    public RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
     public PlainTrandata getPlainTrandata() {
         return new PlainTrandata();
     }

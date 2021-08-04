@@ -1,6 +1,9 @@
 package com.arbpg.mof.controller;
 
-import com.arbpg.mof.model.*;
+import com.arbpg.mof.model.BillDetails;
+import com.arbpg.mof.model.MOFRequest;
+import com.arbpg.mof.model.PlainTrandata;
+import com.arbpg.mof.model.PlainTrandataRequest;
 import com.arbpg.mof.services.PlainTranDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -23,9 +24,6 @@ public class PlainTranDataController {
 
     @Autowired
     private PlainTrandata plainTrandata;
-
-    @Autowired
-    RestTemplate restTemplate;
 
     @Autowired
     MOFRequest mofRequest;
@@ -75,6 +73,7 @@ public class PlainTranDataController {
         mofRequest.setResponseURL(plainTrandata.getResponseURL());
         mofRequest.setErrorURL(plainTrandata.getErrorURL());
         mofRequest.setTrandata(encryptedTranData);
+        model.addAttribute("paymentURL",plainTranDataRequest.getPaymentURL());
         model.addAttribute("responseURL", plainTrandata.getResponseURL());
         model.addAttribute("errorURL", plainTrandata.getErrorURL());
         model.addAttribute("trandata", encryptedTranData);
